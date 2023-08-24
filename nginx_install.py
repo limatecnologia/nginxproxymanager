@@ -73,4 +73,5 @@ print("Instalação finalizada!")
 sleep 5
 print("")
 print("Aguenta aí que vou reiniciar a parada hehehehe!")
+os.system("reboot now")
 #print(f"Acesse o host pela URL http://{ip_address}:81")
