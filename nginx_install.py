@@ -59,4 +59,7 @@ os.chdir("/etc/nginx-proxy")
 os.system("docker-compose up -d")
 print("")
 print("Instalação finalizada!")
-print(f"Acesse o host pela URL http://{ip_address}:81")
+sleep 5
+print("")
+print("Aguenta aí que vou reiniciar a parada hehehehe!")
+#print(f"Acesse o host pela URL http://{ip_address}:81")
