@@ -35,31 +35,42 @@ print("Criando arquivo docker-compose.yml")
 print("")
 # Criar ou atualizar arquivo docker-compose.yml
 compose_content = """
-version: '3.8'
+version: "3"
 services:
   app:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
     ports:
       # These ports are in format <host-port>:<container-port>
-      - '80:80' # Public HTTP Port
-      - '443:443' # Public HTTPS Port
-      - '81:81' # Admin Web Port
-      # Add any other Stream port you want to expose
+      - '80:80'       # Porta HTTP publica
+      - '443:443'     # Porta HTTPS publica
+      - '81:81' # Porta de administracao do Nginx Proxy
+      # Adicione qualquer outra porta Stream que você queira expor
       # - '21:21' # FTP
-
-    # Uncomment the next line if you uncomment anything in the section
     environment:
-      # Uncomment this if you want to change the location of
-      # the SQLite DB file within the container
-      DB_SQLITE_FILE: "/data/database.sqlite"
-
-      # Uncomment this if IPv6 is not enabled on your host
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "nginxproxy"
+      DB_MYSQL_PASSWORD: "Q&2w#44Q"
+      DB_MYSQL_NAME: "nginxproxy"
+      # Remova o comentário se você não tem o IPv6 em seu host
       DISABLE_IPV6: 'true'
-
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - db
+ 
+  db:
+    image: 'jc21/mariadb-aria:latest'
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'Q&2w#44Q'
+      MYSQL_DATABASE: 'nginxproxy'
+      MYSQL_USER: 'nginxproxy'
+      MYSQL_PASSWORD: 'Q&2w#44Q'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
 """
 compose_file_path = "/etc/nginx-proxy/docker-compose.yml"
 with open(compose_file_path, "w") as compose_file:
